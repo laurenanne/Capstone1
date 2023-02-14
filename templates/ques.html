@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex d-flex-row row mt-3">
+        <h1 class="d-flex justify-content-center ques">{{question.question}}</h1>
+
+        <div class="mt-3 container d-flex justify-content-center">
+            <form class="ques-form" action='/response' method="POST">
+                {% for choice in question.choices %}
+
+                <div class="d-flex d-flex-row"></div>
+                <p class="d-flex justify-content-start"><input type="radio" name="answer" value="{{choice}}">{{choice}}
+                </p>
+                {% endfor %}
+                <button class="mt-2" type="submit">Submit</button>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

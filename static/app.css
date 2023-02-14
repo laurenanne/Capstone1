@@ -1,0 +1,116 @@
+.cont-prof-img {
+    display: inline-block;
+    height: 200px;
+    width: 200px;
+    /* border-radius: 100%; */
+    border-width: 5px;
+    border-color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.potions{
+    margin-top: 2rem;;
+}
+
+
+.profile {
+    max-width: 100%;
+    max-height: 200px;;
+    position: absolute;
+    top:0;
+    left:0;
+  
+}
+
+
+
+.cont-side-img{
+    height:200px;
+    width:200px;
+
+}
+
+.side-img {
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  display: block;
+
+}
+
+
+.char-img {
+    object-fit: none;
+    object-position: center;
+    max-height: 250px;
+    margin-bottom: 1rem;
+  
+}
+
+
+.input-group{
+    padding-left:9%;
+    padding-right: 9%;
+}
+
+.potion-shelf{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+
+.username{
+    font-size: 1.5rem;
+    color: white;
+}
+
+.container-fluid.mainpage{
+    height:100%;
+    background-image: url('/static/background.jpeg');
+    background-position: center;
+    background-repeat: none;
+    background-size: cover;
+}
+
+body, html{
+    height:100%;
+    overflow: auto;
+}
+
+.btn.btn-start{
+    opacity: .5;
+    color: white;
+
+}
+
+
+.btn.btn-start:hover{
+    opacity: 1;
+    color: white;
+   
+
+}
+
+.container-fluid.results{
+    height:100%;
+    background-image: url('/static/result.jpg');
+    background-position: center;
+    background-repeat: none;
+    background-size: cover;
+}
+
+a > footer{
+    color:white
+}
+
+
+.container-fluid.potions{
+    height:100%;
+    /* background-image: url('/static/magic.jpeg'); */
+    background-position: center;
+    background-repeat: none;
+    background-color: transparent;
+    background-size: cover;
+}

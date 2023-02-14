@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="m-5 container-fluid">
+    <div class="mb-2 d-flex-row row">
+        <h1>Create an Account</h1>
+    </div>
+    <form method="POST">
+        {{form.hidden_tag()}}
+
+        {% for field in form
+        if field.widget.input_type != "hidden" %}
+        <div class="mb-2 d-flex-row row">
+            <p>
+                {{field.label}}
+                {{field}}
+
+
+                {%for err in field.errors %}
+                <span>{{err}}</span>
+                {% endfor %}
+            </p>
+        </div>
+        {% endfor %}
+        <button>Submit</button>
+    </form>
+
+    {% endblock %}

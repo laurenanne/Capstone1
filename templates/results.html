@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="h-100 container-fluid results">
+    <div class="d-flex-row row justify-content-center">
+        <div class="display-1 mt-5 d-flex justify-content-center" style="color:white">{{results}}</div>
+    </div>
+    <div class="d-flex-row row align-items-bottom">
+        <p class=" d-flex justify-content-center">Signup to continue</p>
+    </div>
+    <div class="h-75 d-flex-row rowsignup">
+        <div class="d-flex justify-content-center flex-bottom">
+            <a class="m-1 btn btn-dark" href="/signup">Signup</a>
+        </div>
+    </div>
+    <div class="d-flex-row">
+        <footer>Photo by <a
+                href="https://unsplash.com/@bitu2104?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tuyen
+                Vo</a> on <a
+                href="https://unsplash.com/photos/tS-jh0M6JoA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+
+        </footer>
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
