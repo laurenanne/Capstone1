@@ -10,10 +10,6 @@
 }
 
 
-.potions{
-    margin-top: 2rem;;
-}
-
 
 .profile {
     max-width: 100%;
@@ -25,41 +21,10 @@
 }
 
 
-
-.cont-side-img{
-    height:200px;
-    width:200px;
-
-}
-
-.side-img {
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-  display: block;
-
-}
-
-
-.char-img {
-    object-fit: none;
-    object-position: center;
-    max-height: 250px;
-    margin-bottom: 1rem;
-  
-}
-
-
 .input-group{
     padding-left:9%;
     padding-right: 9%;
 }
-
-.potion-shelf{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-}
-
 
 .username{
     font-size: 1.5rem;
@@ -90,7 +55,6 @@ body, html{
     opacity: 1;
     color: white;
    
-
 }
 
 .container-fluid.results{
@@ -101,16 +65,26 @@ body, html{
     background-size: cover;
 }
 
-a > footer{
-    color:white
-}
 
-
-.container-fluid.potions{
+.container-fluid.background{
     height:100%;
-    /* background-image: url('/static/magic.jpeg'); */
+    background-image: url('');
     background-position: center;
     background-repeat: none;
     background-color: transparent;
     background-size: cover;
+}
+
+
+.potter{
+    font-family: Harry p;
+   
+}
+
+.fa-regular.fa-heart{
+    color: rgb(255, 0, 0);
+}
+
+.fa-solid.fa-heart{
+    color: rgb(255, 0, 0);
 }

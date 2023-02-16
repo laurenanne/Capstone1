@@ -42,6 +42,7 @@ def signup():
     house = session[HOUSE_KEY]
 
     if form.validate_on_submit():
+
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
@@ -179,6 +180,23 @@ def quiz_result():
 
 ########################################################
 # user routes
+@app.route('/users')
+def show_users():
+    """Show all users """
+    users = User.query.all()
+
+    for user in users:
+        print(user.id)
+    return render_template('/wizards.html', users=users)
+
+
+@app.route('/home')
+def show_user_homepage():
+    user_id = session[CURR_USER_KEY]
+
+    return redirect(f'/user/{user_id}')
+
+
 @app.route('/user/<int:user_id>')
 def show_user_page(user_id):
     """Show user detail"""
@@ -203,38 +221,22 @@ def show_user_page(user_id):
     return render_template('main.html', user=user, characters=characters)
 
 
-@app.route('/user/<int:user_id>/spells')
-def show_user_spelbook(user_id):
-    """shows users spell book snd a search bar to look for more to add"""
-
-    user = User.query.get_or_404(user_id)
-
-    """make an API call to get spells starting with"""
-    final_results = []
-    for page in range(1, 4):
-        response = requests.get(
-            f'https://api.potterdb.com/v1/spells?filter[name_start]=p')
-        data = response.json()
-        final_results = final_results + data['data']
-
-    spells = []
-    for repo in final_results:
-        if repo['attributes']['image'] is not None:
-            spells.append({'name': repo['attributes']['name'],
-                           'image': repo['attributes']['image']})
-
-    spell_list = random.choices(spells, k=18)
-
-    return render_template('spells.html', user=user, spells=spell_list)
-
-
 @app.route('/user/<int:user_id>/potions')
 def show_user_potions(user_id):
-    """shows users potions snd a search bar to look for more to add"""
+    """shows users potions and a search button to look for more to add"""
 
     user = User.query.get_or_404(user_id)
 
-    return render_template('/potions.html', user=user)
+    return render_template('/my-potions.html', user=user)
+
+
+@app.route('/user/<int:user_id>/spells')
+def show_user_spells(user_id):
+    """shows users spells and a search button to add"""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('/my-spells.html', user=user)
 
 
 @app.route('/user/<int:user_id>/edit', methods=["GET", "POST"])
@@ -309,8 +311,14 @@ def get_potions_starting_with(letter):
             potions.append({'id': repo['id'], 'name': repo['attributes']['name'],
                            'image': repo['attributes']['image']})
 
-    print(potions)
     return potions
+
+
+@app.route('/potions')
+def show_all_potions():
+    """shows potion search"""
+
+    return render_template('/potions.html')
 
 
 @app.route('/potions/<potion_id>')
@@ -322,7 +330,7 @@ def show_potion(potion_id):
     repo = response.json()['data']
 
     ingredients = repo['attributes']['ingredients']
-    print(ingredients)
+
     if ingredients is None:
         ingredients = ['None listed']
     elif ingredients == '':
@@ -330,19 +338,23 @@ def show_potion(potion_id):
     else:
         ingredients = ingredients.split(', ')
 
-    # characteristics =
-    # print(characteristics)
-    # if characteristics is None:
-    #     characteristics = ['None listed']
-    # elif characteristics == '':
-    #     characteristics = ['None listed']
-    # else:
-    #     characteristics = characteristics.split(', ')
-
     potion = {'id': repo['id'], 'name': repo['attributes']['name'], 'image': repo['attributes']['image'], 'effect': repo['attributes']
               ['effect'], 'difficulty': repo['attributes']['difficulty'], 'ingredients': ingredients, 'characteristics': repo['attributes']['characteristics']}
 
-    return render_template('/potion-detail.html', potion=potion)
+    id = repo['id']
+
+    user = User.query.get_or_404(session[CURR_USER_KEY])
+    if len(user.potions) > 0:
+        for pot in user.potions:
+            if pot.potion_id == id:
+                icon = "fa-solid fa-heart"
+            else:
+                icon = "fa-regular fa-heart"
+
+    else:
+        icon = "fa-regular fa-heart"
+
+    return render_template('/potion-detail.html', potion=potion, icon=icon)
 
 
 @app.route('/potions/<potion_id>/add_like')
@@ -352,9 +364,9 @@ def add_like_for_potion(potion_id):
     user = User.query.get_or_404(user_id)
 
     """check if potion is already on the potion shelf. If it is remove from shelf"""
-    if user.potions is not None:
+    if len(user.potions) > 0:
         for pot in user.potions:
-            if pot.potion.id == potion_id:
+            if pot.potion_id == potion_id:
                 return redirect(f'/potions/{potion_id}/remove_like')
 
         """make an API call to get potion detail"""
@@ -406,9 +418,119 @@ def remove_like_for_potion(potion_id):
     return redirect(f'/user/{user_id}/potions')
 
 
-# @app.route('/spells/<int:spell_id>')
-# def show_spell(spell_id):
-#     """shows spell details"""
+##########################################################################
+# Spell routes
 
 
-#     return render_template('/spell-detail.html', spell=spell)
+@app.route('/spells/search/<letter>')
+def get_spells_starting_with(letter):
+    """make an API call to get spellss starting with"""
+    final_results = []
+    for page in range(1, 2):
+        response = requests.get(
+            f'https://api.potterdb.com/v1/spells?filter[name_start]={letter}')
+        data = response.json()
+        final_results = final_results + data['data']
+
+    spells = []
+    for repo in final_results:
+        if repo['attributes']['image'] is not None:
+            spells.append({'id': repo['id'], 'name': repo['attributes']['name'],
+                           'image': repo['attributes']['image']})
+
+    return spells
+
+
+@app.route('/spells')
+def show_all_spells():
+    """shows spells search"""
+
+    return render_template('/spells.html')
+
+
+@app.route('/spells/<spell_id>')
+def show_spell(spell_id):
+    """shows spell details"""
+    """make an API call to get spell detail"""
+    response = requests.get(
+        f'https://api.potterdb.com/v1/spells/{spell_id}')
+    repo = response.json()['data']
+
+    spell = {'id': repo['id'], 'name': repo['attributes']['name'], 'image': repo['attributes']['image'], 'incantation': repo['attributes']
+             ['incantation'], 'category': repo['attributes']['category'], 'effect': repo['attributes']['effect']}
+
+    id = repo['id']
+
+    user = User.query.get_or_404(session[CURR_USER_KEY])
+    if len(user.spells) > 0:
+        for spl in user.spells:
+            if spl.spell_id == id:
+                icon = "fa-solid fa-heart"
+            else:
+                icon = "fa-regular fa-heart"
+
+    else:
+        icon = "fa-regular fa-heart"
+
+    return render_template('/spell-detail.html', spell=spell, icon=icon)
+
+
+@app.route('/spells/<spell_id>/add_like')
+def add_like_for_spell(spell_id):
+
+    user_id = session[CURR_USER_KEY]
+    user = User.query.get_or_404(user_id)
+
+    """check if spell is already in the spell book. If it is remove from book"""
+    if len(user.spells) > 0:
+        for spl in user.spells:
+            if spl.spell_id == spell_id:
+                return redirect(f'/spells/{spell_id}/remove_like')
+
+        """make an API call to get spell detail"""
+    response = requests.get(
+        f'https://api.potterdb.com/v1/spells/{spell_id}')
+    repo = response.json()['data']
+
+    name = repo['attributes']['name']
+    img_url = repo['attributes']['image']
+
+    """if another user has liked it so it's in the spell database move directly to adding it to user spell table"""
+    if Spell.query.get(spell_id):
+
+        user_spells = UserSpell(user_id=user_id, spell_id=spell_id)
+        db.session.add(user_spells)
+        db.session.commit()
+
+    else:
+
+        spell = Spell(id=spell_id, name=name, img_url=img_url)
+        db.session.add(spell)
+        db.session.commit()
+
+        user_spells = UserSpell(user_id=user_id, spell_id=spell_id)
+        db.session.add(user_spells)
+        try:
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            if isinstance(e.orig, UniqueViolation):
+
+                return redirect(f'/user/{user_id}/spells')
+
+    return redirect(f'/user/{user_id}/spells')
+
+
+@app.route('/spells/<spell_id>/remove_like')
+def remove_like_for_spell(spell_id):
+    """removes a spell from the spell book"""
+    user_id = session[CURR_USER_KEY]
+    user = User.query.get_or_404(user_id)
+
+    user_spell = UserSpell.query.filter(
+        UserSpell.user_id == user_id, UserSpell.spell_id == spell_id).first()
+
+    db.session.delete(user_spell)
+    db.session.commit()
+
+    return redirect(f'/user/{user_id}/spells')

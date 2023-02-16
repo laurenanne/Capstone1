@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="h-100 container-fluid background">
+    <div class="d-flex-row row pt-4 pb-2">
+        <h1 class="display-2 d-flex justify-content-center t-20 potter">My Spell Book</h>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row char-section">
+            {% if not user.spells %}
+            <div class="text-center">
+                <p>You have no spells in your book yet. Click search below to add some!</p>
+            </div>
+            {% endif %}
+            {% for spl in user.spells %}
+            <div class=" t-20 col-sm-2">
+                <div class="card box text-center">
+                    <a href="/spells/{{spl.spell.id}}"><img class="card-img-top char-img img-fluid"
+                            src="{{spl.spell.img_url}}"></a>
+                    <div class="card-body">
+                        <p class="card-text-center" style="font-size: .8rem">{{spl.spell.name}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <div class="d-flex-row row mt-3">
+        <div class="d-flex justify-content-center">
+
+            <a class="m-1 btn btn-dark btn-sm" href="/user/{{user.id}}">Back</a>
+
+            <a class="m-1 btn btn-dark btn-sm" href="/spells">Search</a>
+
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}

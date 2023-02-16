@@ -2,13 +2,31 @@
 
 {% block content %}
 
-<div class="spells">
-    <div class="spell-book">
 
+<div class="container-fluid">
+    <div class="d-flex-row row">
+        <div class="d-flex justify-content-end">
+            <a class="m-1 btn btn-dark btn-sm" href="/home">Home</a>
+        </div>
     </div>
 
-    <div class="search">Search
+    <div class="d-flex-row row mt-5">
+        <h1 class="display-2 d-flex justify-content-center t-20 potter">Spells</h>
+    </div>
 
+    <div class="input-group rounded">
+
+        <input id="spell-input" type="search" class="form-control rounded" placeholder="Spell starts with...">
+        <span class="input-group-text border-0" id="search-spells">
+            <button class="border-0"><i class="fas fa-search"></i></button>
+        </span>
+
+    </div>
+    <br />
+    <div class="container mt-2rem mr-2rem ml-2rem">
+        <div id="spell-results" class="row">
+
+        </div>
     </div>
 
 

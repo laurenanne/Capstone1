@@ -3,18 +3,17 @@
 {% block content %}
 
 
-
 <div class="container card mt-5" style="width:60%">
     <div class="d-flex d-flex-row row justify-content-center" style="width:100%">
         <div class="d-flex d-flex-row row" style="width:100%">
             <div class="mt-2 p-0 d-flex justify-content-start col-6">
                 <h2>{{potion.name}}</h2>
-                <p id="potion-id" hidden>{{potion.id}}</p>
             </div>
 
-            <div class="mt-2 col-6 d-flex justify-content-end" id="potion-like">
-                <a href="/potions/{{potion.id}}/add_like"><button class="btn like-btn border-0"><i class="fa fa-heart"
-                            style="font-size:2rem"></i></button></a>
+            <div class="mt-2 col-6 d-flex justify-content-end" id="{{potion.id}}">
+                <button id="like-btn" class="btn border-0">
+                    <a href="/potions/{{potion.id}}/add_like"><i class="{{icon}}" style="font-size:2rem"></i></a>
+                </button>
             </div>
         </div>
     </div>
@@ -52,11 +51,11 @@
     </div>
 </div>
 
-<div>
-    <a href="/potions/{user.id}/"><button class="btn like-btn border-0">Back</button></a>
+<div class="m-2">
+    <a href="/potions"><button class="btn btn-sm btn-dark">Back</button></a>
 
 </div>
-</div>
+
 
 
 

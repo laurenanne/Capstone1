@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container card mt-5" style="width:60%">
+    <div class="d-flex d-flex-row row justify-content-center" style="width:100%">
+        <div class="d-flex d-flex-row row" style="width:100%">
+            <div class="mt-2 p-0 d-flex justify-content-start col-6">
+                <h2>{{spell.name}}</h2>
+            </div>
+
+            <div class="mt-2 col-6 d-flex justify-content-end">
+
+                <a href="/spells/{{spell.id}}/add_like"><button class="btn spell-like-btn border-0"><i class="{{icon}}"
+                            style="font-size:2rem"></i></button></a>
+
+            </div>
+        </div>
+    </div>
+    <div class="d-flex d-flex-row row" style="width:100%">
+        <div class="justify-content-start">
+            <p>Incantation: {{spell.incantation}}
+                <br />
+                Category: {{spell.category}}
+
+            </p>
+        </div>
+
+    </div>
+
+    <div class="d-flex-row row">
+        <div class="d-flex justify-content-start">
+            <img class="mg-fluid" src="{{spell.image}}">
+        </div>
+    </div>
+
+
+    <div class="d-flex-row row">
+        <div class="d-flex justify-content-start">
+            <p>
+                Effect: {{spell.effect}}
+            </p>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="m-2">
+    <a href="/spells"><button class="btn btn-sm btn-dark">Back</button></a>
+
+</div>
+
+
+
+
+
+{% endblock %}

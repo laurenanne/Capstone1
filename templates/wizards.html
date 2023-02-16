@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid wizards">
+    <div class="d-flex-row row">
+        <div class="d-flex justify-content-end">
+            <a class="m-1 btn btn-dark btn-sm" href="/home">Home</a>
+        </div>
+    </div>
+    <div class="d-flex-row row">
+        <h1 class="display-2 d-flex justify-content-center p-2 m-2 potter">Wizards</h>
+    </div>
+
+    <div class=" container-fluid">
+        <div class="row char-section">
+            {% for user in users %}
+
+            <div class="col-sm-4 col-md-3 col-xl-2 mt-3">
+                {% if user.house == 'Gryffindor' %}
+                <div class="card box bg-danger text-center">
+                    {% endif %}
+                    {% if user.house == 'Slytherin' %}
+                    <div class="card box bg-success text-center">
+                        {% endif %}
+                        {% if user.house == 'Hufflepuff' %}
+                        <div class="card box bg-warning text-center">
+                            {% endif %}
+                            {% if user.house == 'Ravenclaw' %}
+                            <div class="card box bg-primary text-center">
+                                {% endif %}
+                                <div class="card-header text-white">{{user.house}}</div>
+                                <a href="/user/{{user.id}}"><img class="p-0 card-img-center img-fluid"
+                                        src="{{user.image_url}}"></a>
+                                <div class="card-body">
+                                    <p class="card-title text-white card-text-center">
+                                        {{user.username}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+
+            </div>
+            {% endblock %}
