@@ -343,13 +343,18 @@ def show_potion(potion_id):
 
     id = repo['id']
 
+    pot_id_list = []
+
     user = User.query.get_or_404(session[CURR_USER_KEY])
     if len(user.potions) > 0:
         for pot in user.potions:
-            if pot.potion_id == id:
-                icon = "fa-solid fa-heart"
-            else:
-                icon = "fa-regular fa-heart"
+            pot_id_list.append(pot.potion_id)
+
+        if id in pot_id_list:
+            icon = "fa-solid fa-heart"
+
+        else:
+            icon = "fa-regular fa-heart"
 
     else:
         icon = "fa-regular fa-heart"
@@ -361,15 +366,15 @@ def show_potion(potion_id):
 def add_like_for_potion(potion_id):
 
     user_id = session[CURR_USER_KEY]
-    user = User.query.get_or_404(user_id)
 
     """check if potion is already on the potion shelf. If it is remove from shelf"""
-    if len(user.potions) > 0:
-        for pot in user.potions:
-            if pot.potion_id == potion_id:
-                return redirect(f'/potions/{potion_id}/remove_like')
+    user_potion = UserPotion.query.filter(
+        UserPotion.user_id == user_id, UserPotion.potion_id == potion_id).first()
 
-        """make an API call to get potion detail"""
+    if user_potion:
+        return redirect(f'/potions/{potion_id}/remove_like')
+
+    """make an API call to get potion detail"""
     response = requests.get(
         f'https://api.potterdb.com/v1/potions/{potion_id}')
     repo = response.json()['data']
@@ -461,13 +466,17 @@ def show_spell(spell_id):
 
     id = repo['id']
 
+    spl_id_list = []
     user = User.query.get_or_404(session[CURR_USER_KEY])
     if len(user.spells) > 0:
         for spl in user.spells:
-            if spl.spell_id == id:
-                icon = "fa-solid fa-heart"
-            else:
-                icon = "fa-regular fa-heart"
+            spl_id_list.append(spl.spell_id)
+
+        if id in spl_id_list:
+            icon = "fa-solid fa-heart"
+
+        else:
+            icon = "fa-regular fa-heart"
 
     else:
         icon = "fa-regular fa-heart"
@@ -479,15 +488,15 @@ def show_spell(spell_id):
 def add_like_for_spell(spell_id):
 
     user_id = session[CURR_USER_KEY]
-    user = User.query.get_or_404(user_id)
 
     """check if spell is already in the spell book. If it is remove from book"""
-    if len(user.spells) > 0:
-        for spl in user.spells:
-            if spl.spell_id == spell_id:
-                return redirect(f'/spells/{spell_id}/remove_like')
+    user_spell = UserSpell.query.filter(
+        UserSpell.user_id == user_id, UserSpell.spell_id == spell_id).first()
 
-        """make an API call to get spell detail"""
+    if user_spell:
+        return redirect(f'/spells/{spell_id}/remove_like')
+
+    """make an API call to get spell detail"""
     response = requests.get(
         f'https://api.potterdb.com/v1/spells/{spell_id}')
     repo = response.json()['data']
@@ -503,7 +512,7 @@ def add_like_for_spell(spell_id):
         db.session.commit()
 
     else:
-
+        """add spell to spell table and user_spell to user spells"""
         spell = Spell(id=spell_id, name=name, img_url=img_url)
         db.session.add(spell)
         db.session.commit()
