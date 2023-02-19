@@ -14,15 +14,17 @@ I envision the demographic being elementary school kids and up. The quiz will as
 
 
 ## API Information:
-[Potter DB](https://potterdb.com/) 
+[Potter DB](https://potterdb.com/)
 
 [API Documentation](https://docs.potterdb.com/)
  
 
 ## Tech Stack Used:
-	Python
-	Javascript
-	Flask
-	Flask-SQLAlchemy
-	Flask-WTF
-	Jinja
+* Python
+* Javascript
+* HTML
+* Boostrap
+* Flask
+* Flask-SQLAlchemy
+* Flask-WTF
+* Jinja
