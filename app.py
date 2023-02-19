@@ -7,7 +7,7 @@ from forms import LoginForm, NewUserForm, EditUserForm
 import requests
 import random
 from psycopg2.errors import UniqueViolation
-
+from werkzeug.exceptions import BadRequest
 
 app = Flask(__name__)
 app.app_context().push()
@@ -137,11 +137,15 @@ def show_ques(quesid):
 @ app.route('/response', methods=["POST"])
 def handle_response():
     """handles the users quiz answers"""
-    response = request.form['answer']
     responses = session[RESPONSES_KEY]
-    responses.append(response)
 
-    session[RESPONSES_KEY] = responses
+    try:
+        response = request.form['answer']
+        responses.append(response)
+        session[RESPONSES_KEY] = responses
+
+    except BadRequest:
+        return redirect(f'/ques/{len(responses)}')
 
     if (len(responses) == len(sorting_hat_quiz.questions)):
         """All the questions have been answered. Redirect to see the results"""
@@ -257,7 +261,7 @@ def edit_user_profile(user_id):
             user.first_name = form.first_name.data,
             user.last_name = form.last_name.data,
             user.username = form.username.data,
-            user.image_url = form.image_url.data or "/static/userimage.jpeg"
+            user.image_url = form.image_url.data or "/static/images/userimage.jpeg"
 
             try:
                 db.session.commit()

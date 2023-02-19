@@ -33,7 +33,7 @@
 
 .container-fluid.mainpage{
     height:100%;
-    background-image: url('/static/background.jpeg');
+    background-image: url('/static/images/background.jpeg');
     background-position: center;
     background-repeat: none;
     background-size: cover;
@@ -59,7 +59,7 @@ body, html{
 
 .container-fluid.results{
     height:100%;
-    background-image: url('/static/result.jpg');
+    background-image: url('/static/images/result.jpg');
     background-position: center;
     background-repeat: none;
     background-size: cover;
@@ -68,7 +68,7 @@ body, html{
 
 .container-fluid.background{
     height:100%;
-    background-image: url('/static/magic.png');
+    background-image: url('/static/images/magic.png');
     background-position: center;
     background-repeat: none;
     background-color: transparent;

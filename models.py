@@ -22,7 +22,7 @@ class User(db.Model):
     last_name = db.Column(db.Text, nullable=False)
     username = db.Column(db.Text, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
-    image_url = db.Column(db.Text, default="/static/userimage.jpeg")
+    image_url = db.Column(db.Text, default="/static/images/userimage.jpeg")
     house = db.Column(db.Text, nullable=False)
 
     potions = db.relationship(

@@ -20,7 +20,8 @@ class NewUserForm(FlaskForm):
                            InputRequired(), Length(min=5, max=50)])
     password = PasswordField('Password', validators=[
                              InputRequired(), Length(min=6)])
-    image_url = StringField('Image URL', default='/static/userimage.jpeg')
+    image_url = StringField(
+        'Image URL', default='/static/images/userimage.jpeg')
 
 
 class EditUserForm(FlaskForm):
@@ -32,4 +33,5 @@ class EditUserForm(FlaskForm):
                            InputRequired(), Length(min=5, max=50)])
     password = PasswordField('Password', validators=[
                              InputRequired(), Length(min=6)])
-    image_url = StringField('Image URL', default='/static/userimage.jpeg')
+    image_url = StringField(
+        'Image URL', default='/static/images/userimage.jpeg')
