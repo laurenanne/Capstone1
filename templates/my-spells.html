@@ -3,6 +3,11 @@
 {% block content %}
 
 <div class="h-100 container-fluid background">
+    <div class="d-flex-row row">
+        <div class="d-flex justify-content-end">
+            <a class="m-1 btn btn-dark btn-sm" href="/home">Home</a>
+        </div>
+    </div>
     <div class="d-flex-row row pt-4 pb-2">
         <h1 class="display-2 d-flex justify-content-center t-20 potter">My Spell Book</h>
     </div>
@@ -30,9 +35,6 @@
     </div>
     <div class="d-flex-row row mt-3">
         <div class="d-flex justify-content-center">
-
-            <a class="m-1 btn btn-dark btn-sm" href="/user/{{user.id}}">Back</a>
-
             <a class="m-1 btn btn-dark btn-sm" href="/spells">Search</a>
 
         </div>

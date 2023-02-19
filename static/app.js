@@ -1,8 +1,9 @@
 // Potions
-const $search = $("#search-addon");
-$search.on("click", getPotions);
+const $searchPotions = $("#search-potions");
+$searchPotions.on("submit", getPotions);
 
 async function getPotions(evt) {
+  evt.preventDefault();
   const input = $("#potion-input")[0].value;
   resp = await axios.get(`/potions/search/${input}`);
   response = resp.data;
@@ -64,9 +65,10 @@ function checkDelete(evt) {
 
 // Spells
 const $searchSpells = $("#search-spells");
-$searchSpells.on("click", getSpells);
+$searchSpells.on("submit", getSpells);
 
 async function getSpells(evt) {
+  evt.preventDefault();
   const input = $("#spell-input")[0].value;
   resp = await axios.get(`/spells/search/${input}`);
   response = resp.data;
