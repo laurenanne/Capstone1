@@ -9,7 +9,7 @@ This website will be a fun site that will allow users to take a sorting hat quiz
 I envision the demographic being elementary school kids and up. The quiz will ask simple school age appropriate questions for a little bit of fun.  
 
 ## User Flow:
-![User Flow](/static/images/userflows.png)
+![User Flow](/static/for_read_me/userflows.png)
 
 
 
@@ -24,6 +24,7 @@ I envision the demographic being elementary school kids and up. The quiz will as
 * Javascript
 * HTML
 * Boostrap
+* JQuery
 * Flask
 * Flask-SQLAlchemy
 * Flask-WTF
