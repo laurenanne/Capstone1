@@ -279,7 +279,7 @@ def edit_user_profile(user_id):
     return render_template('/edit.html', form=form, user=user)
 
 
-@ app.route('/user/<int:user_id>/delete', methods=["POST"])
+@ app.route('/user/<int:user_id>/delete')
 def delete_user(user_id):
     """Delete user"""
 
@@ -299,13 +299,12 @@ def delete_user(user_id):
 # Potions routes
 
 
-@ app.route('/potions/search/<letter>')
-def get_potions_starting_with(letter):
-    """make an API call to get potions starting with"""
+@ app.route('/potions/search')
+def get_all_potions():
     final_results = []
     for page in range(1, 2):
         response = requests.get(
-            f'https://api.potterdb.com/v1/potions?filter[name_start]={letter}')
+            f'https://api.potterdb.com/v1/potions')
         data = response.json()
         final_results = final_results + data['data']
 
@@ -419,13 +418,13 @@ def add_like_for_potion(potion_id):
 # Spell routes
 
 
-@app.route('/spells/search/<letter>')
-def get_spells_starting_with(letter):
-    """make an API call to get spellss starting with"""
+@app.route('/spells/search')
+def get_all_spells():
+    """make an API call to get all spells"""
     final_results = []
     for page in range(1, 2):
         response = requests.get(
-            f'https://api.potterdb.com/v1/spells?filter[name_start]={letter}')
+            f'https://api.potterdb.com/v1/spells')
         data = response.json()
         final_results = final_results + data['data']
 
