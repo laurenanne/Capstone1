@@ -2,8 +2,8 @@ from flask import Flask, render_template, jsonify, request, session, redirect, f
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import db, connect_db, User, Potion, Spell, UserPotion, UserSpell
-from quiz import sorting_hat_quiz, determine_house
-from forms import LoginForm, NewUserForm, EditUserForm
+from quiz import sorting_hat_quiz, determine_house, find_wizard_name
+from forms import LoginForm, NewUserForm, EditUserForm, WizardNameForm
 import requests
 import random
 from psycopg2.errors import UniqueViolation
@@ -26,7 +26,7 @@ db.create_all()
 RESPONSES_KEY = 'responses'
 CURR_USER_KEY = 'curr_user'
 HOUSE_KEY = 'house'
-
+WIZARD_KEY = 'wiz_name'
 
 #################################################################
 # User signup / login / logout routes
@@ -86,9 +86,6 @@ def login():
 def logout():
     """handle user logout"""
 
-    if CURR_USER_KEY in session:
-        session.pop(CURR_USER_KEY)
-
     return redirect('/')
 
 
@@ -99,8 +96,7 @@ def logout():
 @app.route('/')
 def homepage():
     """Show homepage"""
-    """clear session of previous responses"""
-
+    session.clear()
     return render_template('index.html')
 
 
@@ -208,7 +204,7 @@ def show_user_page(user_id):
 
     """make an API call to get characters in the user's house"""
     final_results = []
-    for page in range(1, 3):
+    for page in range(1, 4):
         response = requests.get(
             f'https://api.potterdb.com/v1/characters?filter[house_eq]={user.house}&page[number={page}]')
         data = response.json()
@@ -243,6 +239,55 @@ def show_user_spells(user_id):
     return render_template('/my-spells.html', user=user)
 
 
+@ app.route('/user/<int:user_id>/wizardname', methods=["GET", "POST"])
+def show_wizard_name_form(user_id):
+
+    form = WizardNameForm()
+    user = User.query.get_or_404(user_id)
+    if WIZARD_KEY in session:
+        session.pop(WIZARD_KEY)
+
+    if form.validate_on_submit():
+        name = request.form.get('first_name')
+        month = request.form.get('birth_month')
+        color = request.form.get('fav_color')
+
+        wiz_name = find_wizard_name(
+            {'name': name, 'month': month, 'color': color})
+
+        session[WIZARD_KEY] = wiz_name
+        return render_template('/name-results.html', user=user, wiz_name=wiz_name)
+
+    return render_template('/name.html', form=form, user=user)
+
+
+@ app.route('/user/<int:user_id>/add-wizardname', methods=["POST"])
+def add_wizard_name_form(user_id):
+    """Allows user to add wizard name to user profile"""
+
+    if WIZARD_KEY not in session:
+        return redirect('/home')
+
+    wiz_name = session[WIZARD_KEY]
+
+    if CURR_USER_KEY in session:
+        user = User.query.get_or_404(session[CURR_USER_KEY])
+        wiz_name = session[WIZARD_KEY]
+
+        user.username = wiz_name
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("This username is already take", 'danger')
+            x = str(random.randint(1, 5000))
+            wiz_name = wiz_name + x
+            session[WIZARD_KEY] = wiz_name
+            return render_template('/name-results.html', user=user, wiz_name=wiz_name)
+
+    return redirect('/home')
+
+
 @ app.route('/user/<int:user_id>/edit', methods=["GET", "POST"])
 def edit_user_profile(user_id):
     "Update profile for current user"
@@ -260,11 +305,12 @@ def edit_user_profile(user_id):
 
             user.first_name = form.first_name.data,
             user.last_name = form.last_name.data,
-            user.username = form.username.data,
             user.image_url = form.image_url.data or "/static/images/userimage.jpeg"
+            user.username = form.username.data
 
             try:
                 db.session.commit()
+
             except IntegrityError as e:
                 db.session.rollback()
                 if isinstance(e.orig, UniqueViolation):
@@ -292,6 +338,8 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
 
+    session.clear()
+
     return redirect('/')
 
 
@@ -302,9 +350,9 @@ def delete_user(user_id):
 @ app.route('/potions/search')
 def get_all_potions():
     final_results = []
-    for page in range(1, 2):
+    for page in range(1, 3):
         response = requests.get(
-            f'https://api.potterdb.com/v1/potions')
+            f'https://api.potterdb.com/v1/potions?page[number={page}]')
         data = response.json()
         final_results = final_results + data['data']
 
@@ -365,7 +413,7 @@ def show_potion(potion_id):
     return render_template('/potion-detail.html', potion=potion, icon=icon)
 
 
-@app.route('/potions/<potion_id>/add_like', methods=["POST"])
+@ app.route('/potions/<potion_id>/add_like', methods=["POST"])
 def add_like_for_potion(potion_id):
 
     user_id = session[CURR_USER_KEY]
@@ -418,13 +466,13 @@ def add_like_for_potion(potion_id):
 # Spell routes
 
 
-@app.route('/spells/search')
+@ app.route('/spells/search')
 def get_all_spells():
     """make an API call to get all spells"""
     final_results = []
-    for page in range(1, 2):
+    for page in range(1, 5):
         response = requests.get(
-            f'https://api.potterdb.com/v1/spells')
+            f'https://api.potterdb.com/v1/spells?page[number={page}]')
         data = response.json()
         final_results = final_results + data['data']
 
@@ -434,17 +482,18 @@ def get_all_spells():
             spells.append({'id': repo['id'], 'name': repo['attributes']['name'],
                            'image': repo['attributes']['image']})
 
+    print(spells)
     return spells
 
 
-@app.route('/spells')
+@ app.route('/spells')
 def show_all_spells():
     """shows spells search"""
 
     return render_template('/spells.html')
 
 
-@app.route('/spells/<spell_id>')
+@ app.route('/spells/<spell_id>')
 def show_spell(spell_id):
     """shows spell details"""
     """make an API call to get spell detail"""
@@ -475,7 +524,7 @@ def show_spell(spell_id):
     return render_template('/spell-detail.html', spell=spell, icon=icon)
 
 
-@app.route('/spells/<spell_id>/add_like', methods=["POST"])
+@ app.route('/spells/<spell_id>/add_like', methods=["POST"])
 def add_like_for_spell(spell_id):
 
     user_id = session[CURR_USER_KEY]

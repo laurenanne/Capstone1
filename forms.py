@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, IntegerField, SelectField
 from wtforms.validators import Length, InputRequired
 
 
@@ -35,3 +35,13 @@ class EditUserForm(FlaskForm):
                              InputRequired(), Length(min=6)])
     image_url = StringField(
         'Image URL', default='/static/images/userimage.jpeg')
+
+
+class WizardNameForm(FlaskForm):
+    """Wizard Name Generator"""
+
+    first_name = StringField('First Name', validators=[InputRequired()])
+    birth_month = SelectField(
+        'Birth Month', choices=[('Jan', 'Jan'), ('Feb', 'Feb'), ('Mar', 'Mar'), ('Apr', 'Apr'), ('May', 'May'), ('Jun', 'Jun'), ('Jul', 'Jul'), ('Aug', 'Aug'), ('Sep', 'Sep'), ('Oct', 'Oct'), ('Nov', 'Nov'), ('Dec', 'Dec')],  validators=[InputRequired()])
+    fav_color = SelectField('Favorite Color', choices=[(
+                            'red', 'Red'), ('orange', 'Orange'), ('yellow', 'Yellow'), ('green', 'Green'), ('blue', 'Blue'), ('purple', "Purple"), ('pink', 'Pink')], validators=[InputRequired()])

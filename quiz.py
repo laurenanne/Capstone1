@@ -95,3 +95,62 @@ def house_description(house):
         desc = ""
 
     return desc
+
+
+def find_wizard_name(inputs):
+    username = inputs['name']
+    username += " "
+    color_name = get_color_name(inputs['color'])
+    username += color_name
+    month_name = get_month_name(inputs['month'])
+    username += month_name
+
+    return username
+
+
+def get_month_name(month):
+    if month == 'Jan':
+        month_name = 'dore'
+    if month == 'Feb':
+        month_name = 'sley'
+    if month == 'Mar':
+        month_name = 'wald'
+    if month == 'Apr':
+        month_name = 'cour'
+    if month == 'May':
+        month_name = 'ry'
+    if month == 'Jun':
+        month_name = 'bottom'
+    if month == 'Jul':
+        month_name = 'diggle'
+    if month == 'Aug':
+        month_name = 'more'
+    if month == 'Sep':
+        month_name = 'back'
+    if month == 'Oct':
+        month_name = 'hart'
+    if month == 'Nov':
+        month_name = 'strange'
+    if month == 'Dec':
+        month_name = 'pin'
+
+    return month_name
+
+
+def get_color_name(color):
+    if color == 'red':
+        color_name = 'Love'
+    if color == 'orange':
+        color_name = 'Potter'
+    if color == 'yellow':
+        color_name = 'Lock'
+    if color == 'green':
+        color_name = 'Davi'
+    if color == 'blue':
+        color_name = 'Petti'
+    if color == 'pink':
+        color_name = 'Mim'
+    if color == 'purple':
+        color_name = 'Borgin'
+
+    return color_name

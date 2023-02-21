@@ -75,6 +75,15 @@ body, html{
     background-size: cover;
 }
 
+.container-fluid.name-results{
+    height:100%;
+    background-image: url('/static/images/username.jpg');
+    background-position: center;
+    background-repeat: none;
+    background-color: transparent;
+    background-size: cover;
+}
+
 
 .potter{
     font-family: Harry p;
