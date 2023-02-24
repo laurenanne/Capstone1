@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, jsonify, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -12,7 +14,8 @@ from werkzeug.exceptions import BadRequest
 app = Flask(__name__)
 app.app_context().push()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///harry_potter'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///harry_potter'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'secret_key13'
@@ -21,7 +24,6 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
-db.create_all()
 
 RESPONSES_KEY = 'responses'
 CURR_USER_KEY = 'curr_user'
@@ -32,7 +34,7 @@ WIZARD_KEY = 'wiz_name'
 # User signup / login / logout routes
 
 
-@app.route('/signup', methods=["GET", "POST"])
+@ app.route('/signup', methods=["GET", "POST"])
 def signup():
     """handle user signup"""
     if HOUSE_KEY not in session:
@@ -62,7 +64,7 @@ def signup():
         return render_template('signup.html', form=form)
 
 
-@app.route('/login', methods=["GET", "POST"])
+@ app.route('/login', methods=["GET", "POST"])
 def login():
     """Renders login form and handles user"""
     form = LoginForm()
@@ -82,7 +84,7 @@ def login():
     return render_template('/login.html', form=form)
 
 
-@app.route('/logout')
+@ app.route('/logout')
 def logout():
     """handle user logout"""
 
@@ -93,7 +95,7 @@ def logout():
 # survey routes
 
 
-@app.route('/')
+@ app.route('/')
 def homepage():
     """Show homepage"""
     session.clear()
@@ -185,8 +187,6 @@ def show_users():
     """Show all users """
     users = User.query.all()
 
-    for user in users:
-        print(user.id)
     return render_template('/wizards.html', users=users)
 
 
@@ -217,7 +217,6 @@ def show_user_page(user_id):
             characters.append({'name': repo['attributes']['name'],
                                'image': repo['attributes']['image']})
 
-    # char_list = random.choices(characters, k=18)
     return render_template('main.html', user=user, characters=characters)
 
 
@@ -482,7 +481,6 @@ def get_all_spells():
             spells.append({'id': repo['id'], 'name': repo['attributes']['name'],
                            'image': repo['attributes']['image']})
 
-    print(spells)
     return spells
 
 

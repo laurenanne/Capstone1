@@ -2,7 +2,7 @@ from statistics import mode
 
 
 response_key = {
-    'A': ['Outside playing tag or trying a new move on the monkey bars', 'Red', 'Basketball', 'Hot fudge sundae', 'Doing any type of physical activity', 'You start experimenting with household items for fun', 'You bravely decide to climb the tree and free the cat yourself', 'You decide are going to try something you have never eaten before', 'You choose the dog that is high energy and playful', 'Try rock climbing'],
+    'A': ['Outside playing tag or trying a new move on the monkey bars', 'Red', 'Basketball', 'Hot fudge sundae', 'Doing any type of physical activity', 'You start experimenting with household items for fun', 'You bravely decide to climb the tree and free the cat yourself', 'You decide you are going to try something you have never eaten before', 'You choose the dog that is high energy and playful', 'Try rock climbing'],
 
     'B': ['Playing Chess or reading a good book', 'Blue', 'Swimming', 'Brownie', 'Meditating in a quiet place', 'You immediately start brainstorming and make a list of ideas to carefully plan', 'You are curious about how the cat got stuck there in the first place', 'You are excited by all the possibilities and ask the waiter lots of questions about the menu', 'You find the dog that seems to be sniffing and licking everything', 'To read as many books as possible from the library'],
 
