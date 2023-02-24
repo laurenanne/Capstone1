@@ -9,7 +9,7 @@ from quiz import Question, find_wizard_name, determine_house, response_key
 from models import db, User
 from flask import session
 
-os.environ['DATABASE_URL'] = "postgres:///hp-test"
+os.environ['DATABASE_URL'] = "postgresql:///hp-test"
 
 
 db.create_all()

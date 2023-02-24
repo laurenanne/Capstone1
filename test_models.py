@@ -7,7 +7,7 @@ from unittest import TestCase
 from sqlalchemy import exc
 from models import db, User, Potion, Spell, UserPotion, UserSpell
 
-os.environ['DATABASE_URL'] = "postgres:///hp-test"
+os.environ['DATABASE_URL'] = "postgresql:///hp-test"
 
 
 db.create_all()

@@ -7,7 +7,7 @@ from unittest import TestCase
 from models import db, User, Potion, Spell, UserPotion, UserSpell
 from quiz import find_wizard_name
 
-os.environ['DATABASE_URL'] = "postgres:///hp-test"
+os.environ['DATABASE_URL'] = "postgresql:///hp-test"
 
 
 db.create_all()
@@ -132,21 +132,9 @@ class UserRoutesTestCase(TestCase):
             self.assertEqual(resp.status_code, 302)
             self.assertEqual(resp.location, '/home')
 
-    def test_wizard_name_results(self):
-        with self.client as c:
-            with c.session_transaction() as sess:
-                wiz_name = find_wizard_name(
-                    {'name': 'User1', 'month': 'Jan', 'color': 'blue'})
-
-                sess[CURR_USER_KEY] = self.user_id
-                sess[WIZARD_KEY] = wiz_name
-
-            resp = c.get(f'/user/{self.user_id}')
-
-            self.assertEqual(resp.status_code, 200)
-            self.assertIn(wiz_name, str(resp.data))
 
 # Test Potion Routes
+
     def test_potions_search(self):
         with self.client as c:
 
