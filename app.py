@@ -16,7 +16,7 @@ app.app_context().push()
 
 uri = os.environ.get('DATABASE_URL', 'postgresql:///harry_potter')
 if uri.startswith("postgres://"):
-    uri = uri.replace("postgrs://", "postgresql://", 1)
+    uri = uri.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
