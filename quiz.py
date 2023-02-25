@@ -8,7 +8,7 @@ response_key = {
 
     'C': ['Playing guitar or helping a friend with an art project', 'Yellow', 'Volleyball', ' Cake to share with friends', "As long as I'm sorrounded by friends I'm calm", 'You grab your friends together and decide to do a group project', 'You feel quite terrible for the poor cat', 'You decide to order an old favorite', 'You pick the dog that looks a bit sad and lonely in the corner', 'Volunteer your time '],
 
-    'D': ['Working on perfecting your latest writing assignment or leading a game of soccer', 'Green', 'Fencing', 'Souffle', "Relax? Don't tell me to relax...I'm working on fine tuning my piano skills", 'You will be working solo on this one', 'You call for rescure and lead the rescue squad to the tree', 'You decide to try the dish which sounds the most flavorful', 'You choose the dog that listens to your commands', 'To work on mastering your tennis skills']}
+    'D': ['Working on perfecting your latest writing assignment or leading a game of soccer', 'Green', 'Fencing', 'Souffle', "Relax? Don't tell me to relax...I'm working on fine tuning my piano skills", 'You will be working solo on this one', 'You call for rescue and lead the rescue squad to the tree', 'You decide to try the dish which sounds the most flavorful', 'You choose the dog that listens to your commands', 'To work on mastering your tennis skills']}
 
 
 class Question:

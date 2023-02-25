@@ -43,22 +43,16 @@ def signup():
     if HOUSE_KEY not in session:
         return redirect('/')
 
-    print('*************************')
-    print("Made it here")
     form = NewUserForm()
     house = session[HOUSE_KEY]
 
     if form.validate_on_submit():
-        print('*************************')
-        print("The form was validated")
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
         try:
             db.session.commit()
             session[CURR_USER_KEY] = user.id
-            print('*************************')
-            print(session[CURR_USER_KEY]) 
             session.pop(HOUSE_KEY)
             session.pop(RESPONSES_KEY)
 
@@ -79,15 +73,11 @@ def login():
    
     """check for valid login credentials"""
     if form.validate_on_submit():
-        print('*************************')
-        print("The form was validated")
         user = User.auth(form.username.data, form.password.data)
 
         if user:
             session[CURR_USER_KEY] = user.id
-            print('*************************')
-            print(session[CURR_USER_KEY])
-
+           
             return redirect(f'/user/{user.id}')
 
         else:
@@ -99,8 +89,16 @@ def login():
 @ app.route('/logout')
 def logout():
     """handle user logout"""
-    print("******************")
-    print("LOGGED OUT")
+    if CURR_USER_KEY in session:
+        session.pop(CURR_USER_KEY)
+    if WIZARD_KEY in session:
+        session.pop(WIZARD_KEY)
+    if HOUSE_KEY in session:
+        session.pop(HOUSE_KEY)
+    if RESPONSES_KEY in session:
+        session.pop(RESPONSES_KEY)    
+
+    
     return redirect('/')
 
 
@@ -111,10 +109,7 @@ def logout():
 @ app.route('/')
 def homepage():
     """Show homepage"""
-    session.clear()
-    print('************************')
-    if CURR_USER_KEY in session:
-        print(session[CURR_USER_KEY]) 
+    
     return render_template('index.html')
 
 
@@ -353,7 +348,15 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
 
-    session.clear()
+    
+    if CURR_USER_KEY in session:
+        session.pop(CURR_USER_KEY)
+    if WIZARD_KEY in session:
+        session.pop(WIZARD_KEY)
+    if HOUSE_KEY in session:
+        session.pop(HOUSE_KEY)
+    if RESPONSES_KEY in session:
+        session.pop(RESPONSES_KEY)    
 
     return redirect('/')
 
