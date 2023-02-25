@@ -68,10 +68,11 @@ def signup():
 
         return redirect(f'/user/{user.id}')
 
-    print('************************')
-    print('IM HERE')
-    
+   
     else:
+        print('************************')
+        print('IM HERE')
+    
         return render_template('signup.html', form=form)
 
 
