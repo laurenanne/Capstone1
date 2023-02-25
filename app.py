@@ -37,15 +37,21 @@ WIZARD_KEY = 'wiz_name'
 # User signup / login / logout routes
 
 
-@ app.route('/signup', methods=["GET", "POST"])
-def signup():
+@ app.route('/signup', methods=["GET"])
+def show_signup_form():
     """handle user signup"""
     if HOUSE_KEY not in session:
         return redirect('/')
 
     form = NewUserForm()
     house = session[HOUSE_KEY]
+   
+    else:
+        return render_template('signup.html', form=form)
 
+
+@ app.route('/signup', methods=["POST"])
+def signup():
     if form.validate_on_submit():
         print('***********************')
         print('VALIDATED FORM')
@@ -68,11 +74,12 @@ def signup():
 
         return redirect(f'/user/{user.id}')
 
-   
     else:
-
-        return render_template('signup.html', form=form)
-
+        print('*****************************')
+        print("NOT VALIDATED")
+        for vars in session:
+            print vars
+        return redirect('/signup')
 
 @ app.route('/login', methods=["GET", "POST"])
 def login():
