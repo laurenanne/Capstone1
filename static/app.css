@@ -1,22 +1,10 @@
-.cont-prof-img {
-    display: inline-block;
-    height: 200px;
-    width: 200px;
-    /* border-radius: 100%; */
-    border-width: 5px;
-    border-color: white;
-    position: relative;
-    overflow: hidden;
-}
 
 
 
 .profile {
     max-width: 100%;
     max-height: 200px;;
-    position: absolute;
-    top:0;
-    left:0;
+
   
 }
 
@@ -27,7 +15,7 @@
 }
 
 .username{
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: white;
 }
 
