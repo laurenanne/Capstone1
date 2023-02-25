@@ -27,7 +27,6 @@ async function getAllPotions() {
 $searchPotions.on("keyup", function (evt) {
   evt.preventDefault();
   const letter = evt.target.value;
-  console.log(letter);
   if (letter == "") {
     return;
   } else {

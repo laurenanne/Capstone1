@@ -47,6 +47,10 @@ def signup():
     house = session[HOUSE_KEY]
 
     if form.validate_on_submit():
+        print('************************')
+        print(session['csrf_token'])
+    
+
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
@@ -58,10 +62,14 @@ def signup():
 
         except IntegrityError:
             flash("This username is already take", 'danger')
+            print('************************')
+            print(session['csrf_token'])
             return redirect('/signup')
 
         return redirect(f'/user/{user.id}')
 
+    print('************************')
+    print(session['csrf_token'])
     else:
         return render_template('signup.html', form=form)
 
