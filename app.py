@@ -72,8 +72,7 @@ def signup():
     else:
         print("*****************************")
         print('not validated')
-        for vars in session:
-            print(vars)
+        
         return render_template('signup.html', form=form)
 
 
