@@ -79,7 +79,7 @@ def signup():
         print("NOT VALIDATED")
         for vars in session:
             print vars
-        return redirect('/signup')
+        return redirect('/')
 
 @ app.route('/login', methods=["GET", "POST"])
 def login():
