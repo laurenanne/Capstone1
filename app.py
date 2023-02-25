@@ -47,9 +47,6 @@ def signup():
     house = session[HOUSE_KEY]
 
     if form.validate_on_submit():
-        print('************************')
-        print('FORM IS VALIDATED')
-    
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
@@ -60,19 +57,16 @@ def signup():
             session.pop(RESPONSES_KEY)
 
         except IntegrityError:
+            db.session.rollback()
             flash("This username is already take", 'danger')
-            print('************************')
-            for vars in session:
-                print(vars)
+         
             return redirect('/signup')
 
         return redirect(f'/user/{user.id}')
 
    
     else:
-        print('************************')
-        print('IM HERE')
-    
+
         return render_template('signup.html', form=form)
 
 
@@ -164,6 +158,7 @@ def handle_response():
         session[RESPONSES_KEY] = responses
 
     except BadRequest:
+        db.session.rollback()
         return redirect(f'/ques/{len(responses)}')
 
     if (len(responses) == len(sorting_hat_quiz.questions)):
