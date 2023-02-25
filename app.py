@@ -57,8 +57,8 @@ def signup():
             session.pop(RESPONSES_KEY)
 
         except IntegrityError:
-            db.session.rollback()
             flash("This username is already take", 'danger')
+            db.session.rollback()
          
             return redirect('/signup')
 
