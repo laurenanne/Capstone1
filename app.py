@@ -43,6 +43,8 @@ def signup():
     if HOUSE_KEY not in session:
         return redirect('/')
 
+    print('*************************')
+    print("Made it here")
     form = NewUserForm()
     house = session[HOUSE_KEY]
 
