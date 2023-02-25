@@ -74,13 +74,17 @@ def signup():
 def login():
     """Renders login form and handles user"""
     form = LoginForm()
-
+   
     """check for valid login credentials"""
     if form.validate_on_submit():
+        print('*************************')
+        print("The form was validated")
         user = User.auth(form.username.data, form.password.data)
 
         if user:
             session[CURR_USER_KEY] = user.id
+            print('*************************')
+            print(session[CURR_USER_KEY])
 
             return redirect(f'/user/{user.id}')
 
