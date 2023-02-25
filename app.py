@@ -107,7 +107,8 @@ def homepage():
     """Show homepage"""
     session.clear()
     print('************************')
-    print(session[CURR_USER_KEY]) 
+    if CURR_USER_KEY in session:
+        print(session[CURR_USER_KEY]) 
     return render_template('index.html')
 
 
