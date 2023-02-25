@@ -69,7 +69,8 @@ def signup():
         return redirect(f'/user/{user.id}')
 
     print('************************')
-    print(session['csrf_token'])
+    print('IM HERE')
+    
     else:
         return render_template('signup.html', form=form)
 
