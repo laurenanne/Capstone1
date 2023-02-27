@@ -4,3 +4,4 @@ __pycache__
 /templates/.DS_Store
 /static/.DS_Store
 /images/.DS_Store
+.env

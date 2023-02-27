@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
 
 from flask import Flask, render_template, jsonify, request, session, redirect, flash
@@ -11,6 +14,7 @@ import random
 from psycopg2.errors import UniqueViolation
 from werkzeug.exceptions import BadRequest
 
+
 app = Flask(__name__)
 app.app_context().push()
 
@@ -21,7 +25,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '55platessummerbunny')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
@@ -32,6 +36,7 @@ RESPONSES_KEY = 'responses'
 CURR_USER_KEY = 'curr_user'
 HOUSE_KEY = 'house'
 WIZARD_KEY = 'wiz_name'
+
 
 #################################################################
 # User signup / login / logout routes
