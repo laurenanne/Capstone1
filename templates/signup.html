@@ -5,8 +5,8 @@
     <div class="mb-2 d-flex-row row">
         <h1>Create an Account</h1>
     </div>
-    <form method="POST" action="">
-        {{ form.csrf_token() }}
+    <form method="POST">
+        {{ form.hidden_tag() }}
 
         {% for field in form
         if field.widget.input_type != "hidden" %}
