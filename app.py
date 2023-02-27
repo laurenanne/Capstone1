@@ -48,8 +48,15 @@ def signup():
     form = NewUserForm()
     house = session[HOUSE_KEY]
 
+    for d in form.data:
+        print (d)
+
+    print(form.csrf_token.data)
+
     if form.validate_on_submit():
-    
+        print("VALIDATED")
+        print(form.csrf_token.data)
+
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
@@ -67,7 +74,7 @@ def signup():
 
         return redirect(f'/user/{user.id}')
 
-   
+    
     else:
         return render_template('signup.html', form=form)
 

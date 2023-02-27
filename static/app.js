@@ -1,19 +1,17 @@
-// Define Global Variables
-let potNames = [];
-let potResp = [];
-let spellNames = [];
-let spellResp = [];
-
 // Potions
 const $potionContainer = $("#potion-results");
 const $searchPotions = $("#search-potions");
 
-$(document).ready(function () {
-  getAllPotions();
-});
+if (sessionStorage.getItem("first") !== "yes") {
+  $(document).ready(function () {
+    getAllPotions();
+  });
+}
 
 // On document load it gets all potions from the API and then creates a list of the potion names
 async function getAllPotions() {
+  let potNames = [];
+  let potResp = [];
   // gets all potions from the API
   resp = await axios.get("/potions/search");
   potResp = resp.data;
@@ -21,6 +19,9 @@ async function getAllPotions() {
   for (let i = 0; i < potResp.length; i++) {
     potNames.push(potResp[i].name);
   }
+  sessionStorage.setItem("first", "yes");
+  sessionStorage.setItem("potNames", JSON.stringify(potNames));
+  sessionStorage.setItem("potResp", JSON.stringify(potResp));
 }
 
 //on key up searchs for potions by letter
@@ -36,6 +37,9 @@ $searchPotions.on("keyup", function (evt) {
 
 // On key press searches for matching names based on the letter input into the search bar
 function getMatchingPotions(letter) {
+  potNames = JSON.parse(sessionStorage.potNames);
+  potResp = JSON.parse(sessionStorage.potResp);
+
   $potionContainer.empty();
   for (let i = 0; i < potNames.length; i++) {
     if (potNames[i].toUpperCase().startsWith(letter.toUpperCase())) {
@@ -64,12 +68,15 @@ function generatePotionMarkup(potion) {
 const $searchSpells = $("#search-spells");
 const $spellContainer = $("#spell-results");
 
-$(document).ready(function () {
-  getAllSpells();
-});
+if (sessionStorage.getItem("firstSpl") !== "yes")
+  $(document).ready(function () {
+    getAllSpells();
+  });
 
 // On document load it gets all spells from the API and then creates a list of the spell names
 async function getAllSpells() {
+  let spellNames = [];
+  let spellResp = [];
   // gets all potions from the API
   resp = await axios.get("/spells/search");
   spellResp = resp.data;
@@ -77,6 +84,9 @@ async function getAllSpells() {
   for (let i = 0; i < spellResp.length; i++) {
     spellNames.push(spellResp[i].name);
   }
+  sessionStorage.setItem("firstSpl", "yes");
+  sessionStorage.setItem("spellNames", JSON.stringify(spellNames));
+  sessionStorage.setItem("spellResp", JSON.stringify(spellResp));
 }
 
 //on key up searchs for spells by letter
@@ -92,6 +102,9 @@ $searchSpells.on("keyup", function (evt) {
 
 // On key press searches for matching names based on the letter input into the search bar
 function getMatchingSpells(letter) {
+  spellNames = JSON.parse(sessionStorage.spellNames);
+  spellResp = JSON.parse(sessionStorage.spellResp);
+
   $spellContainer.empty();
   for (let i = 0; i < spellNames.length; i++) {
     if (spellNames[i].toUpperCase().startsWith(letter.toUpperCase())) {
