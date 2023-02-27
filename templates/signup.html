@@ -6,7 +6,7 @@
         <h1>Create an Account</h1>
     </div>
     <form method="POST" action="">
-        {{ form.crsf_token() }}
+        {{ form.csrf_token() }}
 
         {% for field in form
         if field.widget.input_type != "hidden" %}
