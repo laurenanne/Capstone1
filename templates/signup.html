@@ -5,8 +5,8 @@
     <div class="mb-2 d-flex-row row">
         <h1>Create an Account</h1>
     </div>
-    <form method="POST">
-        {{form.hidden_tag()}}
+    <form method="POST" action="">
+        {{ form.crsf_token() }}
 
         {% for field in form
         if field.widget.input_type != "hidden" %}
@@ -16,7 +16,7 @@
                 {{field}}
 
 
-                {%for err in field.errors %}
+                {% for err in field.errors %}
                 <span>{{err}}</span>
                 {% endfor %}
             </p>
@@ -24,5 +24,6 @@
         {% endfor %}
         <button type="submit">Submit</button>
     </form>
+</div>
 
-    {% endblock %}
+{% endblock %}
