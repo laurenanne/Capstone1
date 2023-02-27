@@ -51,9 +51,24 @@ def signup():
     for d in form.data:
         print (d)
 
+    print('********************')
     print(form.csrf_token.data)
+    print(form.hidden_tag())
+
+    if request.method =='GET':
+        print ("GET METHOD")
+
+    if request.method == 'POST':
+        print('POST')    
+
+        if not form.validate_on_submit():
+            for field, errors in form.errors.items():
+                print(field, errors)
 
     if form.validate_on_submit():
+        for d in form.data:
+            print (d)
+
         print("VALIDATED")
         print(form.csrf_token.data)
 
