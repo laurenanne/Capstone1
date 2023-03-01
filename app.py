@@ -54,9 +54,11 @@ def signup():
     print('********************')
     print(form.csrf_token.data)
     print(form.hidden_tag())
+    print(app.config)
 
     if request.method =='GET':
         print ("GET METHOD")
+
 
     if request.method == 'POST':
         print('POST')    
@@ -64,6 +66,7 @@ def signup():
         if not form.validate_on_submit():
             for field, errors in form.errors.items():
                 print(field, errors)
+                print(app.config)
 
     if form.validate_on_submit():
         for d in form.data:
@@ -71,6 +74,7 @@ def signup():
 
         print("VALIDATED")
         print(form.csrf_token.data)
+        print(app.config)
 
         user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
@@ -85,7 +89,7 @@ def signup():
             flash("This username is already take", 'danger')
             db.session.rollback()
          
-            return redirect('/signup')
+            return render_template('signup.html', form =form)
 
         return redirect(f'/user/{user.id}')
 
