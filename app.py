@@ -82,7 +82,7 @@ def signup():
         print(form.csrf_token.data)
         print(app.config)
         try:
-        user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
+            user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
             db.session.commit()
