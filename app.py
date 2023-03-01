@@ -92,9 +92,10 @@ def signup():
 
         except IntegrityError:
             flash("This username is already take", 'danger')
+            print(form.csrf_token.data)
             db.session.rollback()
          
-            return render_template('signup.html', form =form)
+            return redirect('/signup')
 
         return redirect(f'/user/{user.id}')
 
