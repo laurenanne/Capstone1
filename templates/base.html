@@ -20,8 +20,9 @@
 
 <body>
     <section class="messages">
-        {% for msg in get_flashed_messages() %}
-        <p>{{msg}}</p>
+        {% for category, msg in get_flashed_messages
+        (with_categories=True) %}
+        <div class="alert alert-{{category}}">{{msg}}</div>
         {% endfor %}
     </section>
 

@@ -69,6 +69,26 @@ def signup():
     if request.method == 'POST':
         print('POST')    
 
+        if len(form.password.data) <6:
+            flash("Password must be at least 6 characters", 'danger')
+            db.session.rollback()
+            return redirect('/signup')
+
+        if not len(form.first_name.data): 
+            flash("You must enter a first name",'danger')
+            db.session.rollback()
+            return redirect('/signup')
+
+        if not len(form.username.data): 
+            flash("You must enter a username", 'danger')
+            db.session.rollback()
+            return redirect('/signup')    
+
+        if len(form.username.data) <5 or len(form.username.data) >50:
+            flash("Username must be at least 5 characters and less than 50", 'danger')    
+            db.session.rollback()
+            return redirect('/signup')
+
         if not form.validate_on_submit():
             for field, errors in form.errors.items():
                 print(field, errors)

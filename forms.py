@@ -14,12 +14,10 @@ class LoginForm(FlaskForm):
 class NewUserForm(FlaskForm):
     """New User Signup Form"""
 
-    first_name = StringField('First Name', validators=[InputRequired()])
-    last_name = StringField('Last Name', validators=[InputRequired()])
-    username = StringField('Username', validators=[
-                           InputRequired(), Length(min=5, max=50)])
-    password = PasswordField('Password', validators=[
-                             InputRequired(), Length(min=6)])
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    username = StringField('Username')
+    password = PasswordField('Password')
     image_url = StringField(
         'Image URL', default='/static/images/userimage.jpeg')
 
