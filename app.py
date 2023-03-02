@@ -13,7 +13,7 @@ from werkzeug.exceptions import BadRequest
 
 
 app = Flask(__name__)
-app.app_context().push()
+# app.app_context().push()
 
 uri = os.environ.get('DATABASE_URL', 'postgresql:///harry_potter')
 if uri.startswith("postgres://"):
@@ -33,7 +33,10 @@ app.config['WTF_CSRF_ENABLED'] = True
 
 debug = DebugToolbarExtension(app)
 
-connect_db(app)
+
+with app.app_context():
+    connect_db(app)
+
 
 RESPONSES_KEY = 'responses'
 CURR_USER_KEY = 'curr_user'
@@ -54,57 +57,48 @@ def signup():
     form = NewUserForm()
     house = session[HOUSE_KEY]
 
-    for d in form.data:
-        print (d)
+    # print('********************')
+    # print(form.csrf_token.data)
+    # print(form.hidden_tag())
+ 
+    # if request.method == 'POST':   
 
-    print('********************')
-    print(form.csrf_token.data)
-    print(form.hidden_tag())
-    print(app.config)
+    #     if len(form.password.data) <6:
+    #         flash("Password must be at least 6 characters", 'danger')
+    #         db.session.rollback()
+    #         return redirect('/signup')
 
-    if request.method =='GET':
-        print ("GET METHOD")
+    #     if not len(form.first_name.data): 
+    #         flash("You must enter a first name",'danger')
+    #         db.session.rollback()
+    #         return redirect('/signup')
 
+    #     if not len(form.username.data): 
+    #         flash("You must enter a username", 'danger')
+    #         db.session.rollback()
+    #         return redirect('/signup')    
 
-    if request.method == 'POST':
-        print('POST')    
+    #     if len(form.username.data) <5 or len(form.username.data) >50:
+    #         flash("Username must be at least 5 characters and less than 50", 'danger')    
+    #         db.session.rollback()
+    #         return redirect('/signup')
 
-        if len(form.password.data) <6:
-            flash("Password must be at least 6 characters", 'danger')
-            db.session.rollback()
-            return redirect('/signup')
-
-        if not len(form.first_name.data): 
-            flash("You must enter a first name",'danger')
-            db.session.rollback()
-            return redirect('/signup')
-
-        if not len(form.username.data): 
-            flash("You must enter a username", 'danger')
-            db.session.rollback()
-            return redirect('/signup')    
-
-        if len(form.username.data) <5 or len(form.username.data) >50:
-            flash("Username must be at least 5 characters and less than 50", 'danger')    
-            db.session.rollback()
-            return redirect('/signup')
-
-        if not form.validate_on_submit():
-            for field, errors in form.errors.items():
-                print(field, errors)
-                print(app.config)
+    #     if not form.validate_on_submit():
+    #         for field, errors in form.errors.items():
+    #             print(field, errors)
+    #             print(app.config)
 
     if form.validate_on_submit():
-        for d in form.data:
-            print (d)
-
-        print("VALIDATED")
-        print(form.csrf_token.data)
-        print(app.config)
+    
+        # print("VALIDATED")
+        # print(form.csrf_token.data)
+        # print(app.config)
+        # with app.app_context():
         try:
             user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
 
+           
             db.session.commit()
             session[CURR_USER_KEY] = user.id
             session.pop(HOUSE_KEY)
@@ -112,10 +106,10 @@ def signup():
 
         except IntegrityError:
             flash("This username is already take", 'danger')
-            print(form.csrf_token.data)
+            print(form.csrf_token.data)                
             db.session.rollback()
          
-            return redirect('/signup')
+            return render_template('signup.html', form=form)
 
         return redirect(f'/user/{user.id}')
 
@@ -403,10 +397,8 @@ def delete_user(user_id):
         return redirect('/login')
 
     user = User.query.get_or_404(user_id)
-
     db.session.delete(user)
     db.session.commit()
-
     
     if CURR_USER_KEY in session:
         session.pop(CURR_USER_KEY)
