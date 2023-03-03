@@ -13,7 +13,6 @@ from werkzeug.exceptions import BadRequest
 
 
 app = Flask(__name__)
-# app.app_context().push()
 
 uri = os.environ.get('DATABASE_URL', 'postgresql:///harry_potter')
 if uri.startswith("postgres://"):
@@ -57,43 +56,7 @@ def signup():
     form = NewUserForm()
     house = session[HOUSE_KEY]
 
-    # print('********************')
-    # print(form.csrf_token.data)
-    # print(form.hidden_tag())
- 
-    # if request.method == 'POST':   
-
-    #     if len(form.password.data) <6:
-    #         flash("Password must be at least 6 characters", 'danger')
-    #         db.session.rollback()
-    #         return redirect('/signup')
-
-    #     if not len(form.first_name.data): 
-    #         flash("You must enter a first name",'danger')
-    #         db.session.rollback()
-    #         return redirect('/signup')
-
-    #     if not len(form.username.data): 
-    #         flash("You must enter a username", 'danger')
-    #         db.session.rollback()
-    #         return redirect('/signup')    
-
-    #     if len(form.username.data) <5 or len(form.username.data) >50:
-    #         flash("Username must be at least 5 characters and less than 50", 'danger')    
-    #         db.session.rollback()
-    #         return redirect('/signup')
-
-    #     if not form.validate_on_submit():
-    #         for field, errors in form.errors.items():
-    #             print(field, errors)
-    #             print(app.config)
-
     if form.validate_on_submit():
-    
-        # print("VALIDATED")
-        # print(form.csrf_token.data)
-        # print(app.config)
-        # with app.app_context():
         try:
             user = User.signup(first_name=form.first_name.data, last_name=form.last_name.data,
                            username=form.username.data, password=form.password.data, image_url=form.image_url.data, house=house)
@@ -105,8 +68,7 @@ def signup():
             session.pop(RESPONSES_KEY)
 
         except IntegrityError:
-            flash("This username is already take", 'danger')
-            print(form.csrf_token.data)                
+            flash("This username is already take", 'danger')               
             db.session.rollback()
          
             return render_template('signup.html', form=form)

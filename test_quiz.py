@@ -11,20 +11,22 @@ from flask import session
 
 os.environ['DATABASE_URL'] = "postgresql:///hp-test"
 
-
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 class QuizTestCase(TestCase):
 
     def setUp(self):
-        db.drop_all()
-        db.create_all()
+        with app.app_context():
+            db.drop_all()
+            db.create_all()
 
-        self.client = app.test_client()
+            self.client = app.test_client()
 
     def tearDown(self):
-        db.session.rollback()
+        with app.app_context():
+            db.session.rollback()
 
     def test_quiz(self):
         ques = Question("Which sport do you most like to play?", [
